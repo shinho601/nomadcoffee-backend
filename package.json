@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "노마드코더 챌린지",
   "scripts": {
-    "dev": "nodemon --exec ./node_modules/.bin/ts-node src/server --ext ts,js",
+    "dev": "nodemon --exec ./node_modules/.bin/ts-node src/server --ext ts,js --delay 2",
     "migrate": "npx prisma migrate dev",
     "studio": "npx prisma studio"
   },
@@ -28,7 +28,9 @@
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "graphql": "^15.7.2",
-    "jsonwebtoken": "^8.5.1"
+    "graphql-upload": "^13.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

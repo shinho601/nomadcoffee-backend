@@ -12,8 +12,8 @@ export default gql`
       email: String
       name: String
       location: String
-      avatarURL: String
       githubUsername: String
+      avatar: Upload
     ): EditProfileResult!
   }
 `

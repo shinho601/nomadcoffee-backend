@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import { protectedResolver } from '../users.utils'
 import { Resolver, Resolvers } from '../../types'
+import { createWriteStream } from 'fs'
 
 const editProfile: Resolver = async (
   _: any,
@@ -10,11 +11,25 @@ const editProfile: Resolver = async (
     email,
     name,
     location,
-    avatarURL,
     githubUsername,
+    avatar,
   },
   { loggedInUser, client }
 ) => {
+  
+  let avatarURL = null;
+  if (avatar) {
+
+    const {
+      file: { filename, createReadStream },
+    } = await avatar
+    const newFilename = `${loggedInUser.id}-${Date.now()}-${filename}`;
+    const readStream = createReadStream()
+    const writeStream = createWriteStream(process.cwd() + '/uploads/' + newFilename)
+    readStream.pipe(writeStream)
+    avatarURL = `http://localhost:4000/static/${newFilename}`;  
+  }
+
   let uglyPassword = null
   if (newPassword) {
     uglyPassword = await bcrypt.hash(newPassword, 10)
@@ -28,7 +43,7 @@ const editProfile: Resolver = async (
       email,
       name,
       location,
-      avatarURL,
+      ...(avatarURL && { avatarURL }),
       githubUsername,
       ...(uglyPassword && { password: uglyPassword }),
     },
