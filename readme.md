@@ -9,26 +9,6 @@
  - PostgreSQL, pgadmin 4
  
 
-## 2nd Task
-
-Nomad Coffee will be an app where developers can go and find the best caffes to work from in 한국!!
-
-On your `schema.prisma` let's create the User model, the model must have the following fields:
-
-- id
-- username
-- email
-- name
-- location
-- password
-- avatarURL
-- githubUsername
-
-After you are done, make a `createAccount` resolver.
-
-`createAccount` should:
-
-- Create a user
-- Hash the password
-- Check that the username / email aren't taken
-- Return `ok:true` or `ok:false`, `error:$error` if there is an error.
+- [X] 1st: Setup [Commit](https://github.com/shinho601/nomadcoffee-backend/commit/c14ca12887d0a213e61057703ebac8ac2aeb4325)
+- [X] 2nd: User Model [Commit](https://github.com/shinho601/nomadcoffee-backend/commit/51789620832560244fe5082cc21e3e3da10a40be)
+- [ ] 3rd: User Profile
