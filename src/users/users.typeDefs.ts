@@ -12,7 +12,4 @@ export default gql`
     createdAt: String!
     updatedAt: String!
   }
-  type Query {
-    getUser(username: String!): User
-  }
 `
