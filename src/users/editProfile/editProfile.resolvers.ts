@@ -16,18 +16,18 @@ const editProfile: Resolver = async (
   },
   { loggedInUser, client }
 ) => {
-  
-  let avatarURL = null;
+  let avatarURL = null
   if (avatar) {
-
     const {
       file: { filename, createReadStream },
     } = await avatar
-    const newFilename = `${loggedInUser.id}-${Date.now()}-${filename}`;
+    const newFilename = `${loggedInUser.id}-${Date.now()}-${filename}`
     const readStream = createReadStream()
-    const writeStream = createWriteStream(process.cwd() + '/uploads/' + newFilename)
+    const writeStream = createWriteStream(
+      process.cwd() + '/uploads/' + newFilename
+    )
     readStream.pipe(writeStream)
-    avatarURL = `http://localhost:4000/static/${newFilename}`;  
+    avatarURL = `http://localhost:4000/static/${newFilename}`
   }
 
   let uglyPassword = null
