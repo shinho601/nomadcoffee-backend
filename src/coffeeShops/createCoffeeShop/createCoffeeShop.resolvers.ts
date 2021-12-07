@@ -1,18 +1,7 @@
 import { Resolver, Resolvers } from '../../types'
 import { protectedResolver } from '../../users/users.utils'
 import { createWriteStream } from 'fs'
-
-const parseCategory = (category: string) => {
-  let categoryObj = []
-  if (category) {
-    const categories = category.match(/#[\w]+/g)
-    categoryObj = categories.map((element) => ({
-      where: { name: element },
-      create: { name: element, slug: element },
-    }))
-  }
-  return categoryObj
-}
+import { parseCategory } from '../coffeeShops.utils'
 
 const createCoffeeShop: Resolver = async (
   _: any,

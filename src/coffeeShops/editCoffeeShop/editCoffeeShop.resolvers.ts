@@ -2,18 +2,7 @@ import bcrypt from 'bcrypt'
 import { protectedResolver } from '../../users/users.utils'
 import { Resolver, Resolvers } from '../../types'
 import { createWriteStream } from 'fs'
-
-const parseCategory = (category: string) => {
-  let categoryObj = []
-  if (category) {
-    const categories = category.match(/#[\w]+/g)
-    categoryObj = categories.map((element) => ({
-      where: { name: element },
-      create: { name: element, slug: element },
-    }))
-  }
-  return categoryObj
-}
+import { parseCategory } from '../coffeeShops.utils'
 
 const editCoffeeShop: Resolver = async (
   _: any,
