@@ -1,5 +1,6 @@
-import { Resolver, Resolvers } from '../../types'
+import bcrypt from 'bcrypt'
 import { protectedResolver } from '../../users/users.utils'
+import { Resolver, Resolvers } from '../../types'
 import { createWriteStream } from 'fs'
 
 const parseCategory = (category: string) => {
@@ -14,35 +15,40 @@ const parseCategory = (category: string) => {
   return categoryObj
 }
 
-const createCoffeeShop: Resolver = async (
+const editCoffeeShop: Resolver = async (
   _: any,
-  { name, latitude, longitude, photos, category },
+  { id, name, latitude, longitude, photos, category },
   { loggedInUser, client }
 ) => {
-  const existing = await client.coffeeShop.findFirst({
-    where: {
-      name,
+  const shop = await client.coffeeShop.findUnique({
+    where: { id },
+    include: {
+      categories: {
+        select: {
+          id: true,
+        },
+      },
     },
   })
 
-  if (existing) {
-    return { ok: false, error: 'This name is already taken.' }
+  if (!shop) {
+    return {
+      ok: false,
+      error: 'No coffeeshop found!',
+    }
   }
 
   const categoryObj = parseCategory(category)
 
-  const newCoffeeShop = await client.coffeeShop.create({
+  await client.coffeeShop.update({
+    where: { id },
     data: {
       name,
       latitude,
       longitude,
-      user: {
-        connect: {
-          id: loggedInUser.id,
-        },
-      },
       ...(categoryObj.length > 0 && {
         categories: {
+          disconnect: shop.categories,
           connectOrCreate: categoryObj,
         },
       }),
@@ -69,20 +75,18 @@ const createCoffeeShop: Resolver = async (
           url,
           shop: {
             connect: {
-              id: newCoffeeShop.id,
+              id: shop.id,
             },
           },
         },
       })
     })
   }
-
-  return { ok: true }
 }
 
 const resolvers: Resolvers = {
   Mutation: {
-    createCoffeeShop: protectedResolver(createCoffeeShop),
+    editCoffeeShop: protectedResolver(editCoffeeShop),
   },
 }
 
