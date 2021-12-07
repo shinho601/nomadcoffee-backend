@@ -42,6 +42,17 @@ const shops: Resolver = ({ id }, { lastId }, { client }) =>
       ...(lastId && { cursor: { id: lastId } }),
     })
 
+const totalShops: Resolver = ({ id }, _, { client }) =>
+  client.coffeeShop.count({
+    where: {
+      categories: {
+        some: {
+          id,
+        },
+      },
+    },
+  })
+
 export default {
   CoffeeShop: {
     user,
@@ -50,5 +61,6 @@ export default {
   },
   Category: {
     shops,
+    totalShops,
   },
 }
