@@ -6,33 +6,33 @@ const createAccount: Resolver = async (
   { username, email, name, location, avatarURL, githubUsername, password },
   { client }
 ) => {
-  try {
-    const existingUser = await client.user.findFirst({
-      where: {
-        OR: [{ username }, { email }],
-      },
-    })
+  const existingUser = await client.user.findFirst({
+    where: {
+      OR: [{ username }, { email }],
+    },
+  })
 
-    if (existingUser) {
-      throw new Error('This username/password is already taken.')
-    }
-
-    const uglyPassword = await bcrypt.hash(password, 10)
-    const newUser = client.user.create({
-      data: {
-        username,
-        email,
-        name,
-        location,
-        avatarURL,
-        githubUsername,
-        password: uglyPassword,
-      },
-    })
-    return { ok: true, user: newUser }
-  } catch (e: any) {
-    return { ok: false, error: e.message }
+  if (existingUser) {
+    return { ok: false, error: 'This username/password is already taken.' }
   }
+
+  const uglyPassword = await bcrypt.hash(password, 10)
+  const newUser = await client.user.create({
+    data: {
+      username,
+      email,
+      name,
+      location,
+      avatarURL,
+      githubUsername,
+      password: uglyPassword,
+    },
+  })
+  if (!newUser) {
+    return { ok: false, error: 'User creation failed.' }
+  }
+
+  return { ok: true }
 }
 
 const resolvers: Resolvers = {
