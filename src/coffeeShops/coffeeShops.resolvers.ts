@@ -31,10 +31,24 @@ const photos: Resolver = ({ id }, { lastId }, { client }) =>
       ...(lastId && { cursor: { id: lastId } }),
     })
 
+const shops: Resolver = ({ id }, { lastId }, { client }) =>
+  client.category
+    .findUnique({
+      where: { id },
+    })
+    .shops({
+      take: 5,
+      skip: lastId ? 1 : 0,
+      ...(lastId && { cursor: { id: lastId } }),
+    })
+
 export default {
   CoffeeShop: {
     user,
     categories,
     photos,
+  },
+  Category: {
+    shops,
   },
 }
