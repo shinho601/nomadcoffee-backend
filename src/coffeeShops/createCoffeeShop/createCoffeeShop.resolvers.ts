@@ -31,30 +31,6 @@ const createCoffeeShop: Resolver = async (
 
   const categoryObj = parseCategory(category)
 
-  let photosObj = []
-  console.log(photos)
-
-  if (photos) {
-    photosObj = photos.map(async (photo) => {
-      const {
-        file: { filename, createReadStream },
-      } = await photo
-      console.log(filename, createReadStream)
-      const newFilename = `coffeeshop-${
-        loggedInUser.id
-      }-${Date.now()}-${filename}`
-      const readStream = createReadStream()
-      const writeStream = createWriteStream(
-        process.cwd() + '/uploads/' + newFilename
-      )
-      readStream.pipe(writeStream)
-      const url = `http://localhost:4000/static/${newFilename}`
-      return {
-        url,
-      }
-    })
-  }
-  console.log(photosObj)
   const newCoffeeShop = await client.coffeeShop.create({
     data: {
       name,
@@ -70,15 +46,41 @@ const createCoffeeShop: Resolver = async (
           connectOrCreate: categoryObj,
         },
       }),
-      ...(photosObj.length > 0 && {
-        photos: {
-          create: photosObj,
-        },
-      }),
     },
   })
 
   console.log(newCoffeeShop)
+
+  let photosObj = []
+  console.log(photos)
+
+  if (photos) {
+    photos.forEach(async (photo) => {
+      const {
+        file: { filename, createReadStream },
+      } = await photo
+      const newFilename = `coffeeshop-${
+        loggedInUser.id
+      }-${Date.now()}-${filename}`
+      const readStream = createReadStream()
+      const writeStream = createWriteStream(
+        process.cwd() + '/uploads/' + newFilename
+      )
+      readStream.pipe(writeStream)
+      const url = `http://localhost:4000/static/${newFilename}`
+
+      await client.coffeeShopPhoto.create({
+        data: {
+          url,
+          shop: {
+            connect: {
+              id: newCoffeeShop.id,
+            },
+          },
+        },
+      })
+    })
+  }
 
   return { ok: true }
 }
