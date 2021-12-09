@@ -10,7 +10,7 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "start": "node dist/server.js",
-    "deploy": "git add . && git commit -m Heroku && git push heroku master"
+    "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
   "repository": {
     "type": "git",
