@@ -10,6 +10,7 @@ const PORT = process.env.PORT;
 const apollo = new ApolloServer({
   resolvers,
   typeDefs,
+  playground: true,
   context: async (ctx) => {
     if (ctx.req) {
       return {
@@ -23,17 +24,6 @@ const apollo = new ApolloServer({
         loggedInUser: context.loggedInUser,
       };
     }
-  },
-  subscriptions: {
-    onConnect: async ({ token }) => {
-      if (!token) {
-        throw new Error("You can't listen.");
-      }
-      const loggedInUser = await getUser(token);
-      return {
-        loggedInUser,
-      };
-    },
   },
 });
 
