@@ -6,4 +6,7 @@ export default gql`
     ok: Boolean!
     error: String
   }
+  type Query {
+    dummy: String
+  }
 `

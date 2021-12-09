@@ -4,4 +4,7 @@ export default gql`
   type Mutation {
     followUser(username: String!): MutationResult!
   }
+  type Query {
+    dummy: String
+  }
 `
