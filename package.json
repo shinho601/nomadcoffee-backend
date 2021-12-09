@@ -7,9 +7,9 @@
     "dev": "nodemon --exec ./node_modules/.bin/ts-node src/server --ext ts,js --delay 2",
     "migrate": "npx prisma migrate dev",
     "studio": "npx prisma studio",
-    "build": "tsc --build",
+    "build": "tsc",
     "clean": "tsc --build --clean",
-    "start": "node dist/server.js",
+    "start": "node dist/server",
     "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
   "repository": {
@@ -31,21 +31,20 @@
     "@graphql-tools/merge": "^8.2.1",
     "@graphql-tools/schema": "^8.3.1",
     "@prisma/client": "^3.6.0",
-    "@types/bcrypt": "^5.0.0",
     "apollo-server": "^3.5.0",
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "graphql": "^15.7.2",
     "graphql-upload": "^13.0.0",
     "jsonwebtoken": "^8.5.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "fs-capacitor": "^7.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@babel/node": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
+    "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/node": "^16.11.10",
+    "@types/graphql-upload": "^8.0.7",
     "nodemon": "^2.0.15",
     "prisma": "^3.6.0",
     "ts-node": "^10.4.0",

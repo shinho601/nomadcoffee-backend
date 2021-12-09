@@ -12,7 +12,4 @@ export default gql`
       avatar: Upload
     ): MutationResult!
   }
-  type Query {
-    dummy: String
-  }
 `

@@ -12,7 +12,4 @@ export default gql`
       password: String!
     ): MutationResult!
   }
-  type Query {
-    dummy: String
-  }
 `
